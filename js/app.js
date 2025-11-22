@@ -1,45 +1,59 @@
-// Constants
+// Constants ---------------------------------------------------------
 const canvasEl = document.querySelector('#canvas');
 
 const ctx = canvasEl.getContext('2d');
 
-// Canvas styles and elements
-ctx.fillStyle = 'red';
-ctx.strokeStyle = 'blue';
-ctx.lineWidth = 5;
+ctx.fillStyle = 'white';
 
-ctx.fillRect(5, 15, 100, 120);
-ctx.strokeRect(5, 15, 100, 120);
 
-ctx.moveTo(290, 100);
-ctx.lineTo(290, 50);
-ctx.stroke();
-
-ctx.arc(165, 75, 50, 0, Math.PI * 2);
-ctx.fill();
-ctx.stroke();
-
-// variables
+// variables ---------------------------------------------------------
 const ball = {
-  positionX: 0,
-  positionY: 0,
-  speedX: 0,
-  speedY: 0,
-  size: 0,
+  positionX: 300, 
+  positionY: 200,
+  speedX: 4,   
+  speedY: 4,
+  size: 8,
 };
 
 const p1Paddle = {
-  positionX: 0,
-  positionY: 0,
-  width: 0,
-  height: 0,
-  speed: 0,
+  positionX: 20,
+  positionY: 150,
+  width: 15,
+  height: 80,
+  speed: 6,
 };
 
 const p2Paddle = {
-  positionX: 0,
-  positionY: 0,
-  width: 0,
-  height: 0,
-  speed: 0,
+  positionX: 565,
+  positionY: 150,
+  width: 15,
+  height: 80,
+  speed: 6,
 };
+
+// Functions ---------------------------------------------------------
+function createBall () {
+  ctx.beginPath();
+  ctx.arc(ball.positionX, ball.positionY, ball.size, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+};
+
+function createPaddle (paddle) {
+  ctx.fillRect(paddle.positionX, paddle.positionY, paddle.width, paddle.height);
+};
+
+function clearCanvas () {
+      ctx.clearRect(0, 0, 600, 400);
+};
+
+function displayElements () {
+  clearCanvas();
+  createBall();
+  createPaddle(p1Paddle);
+  createPaddle(p2Paddle); 
+  requestAnimationFrame(displayElements);
+};
+
+displayElements();
+

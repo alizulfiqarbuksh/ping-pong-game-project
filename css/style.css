@@ -11,7 +11,7 @@ body {
 }
 
 #canvas {
-  width: 600px;
-  height: 400px;
-  background-color: #FFFFFF;
+  /* width: 600px;
+  height: 400px; */
+  background-color: black;
 }
