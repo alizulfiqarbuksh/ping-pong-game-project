@@ -1,4 +1,5 @@
 // Constants ---------------------------------------------------------
+const resultEl = document.querySelector('#result');
 const canvasEl = document.querySelector('#canvas');
 
 const ctx = canvasEl.getContext('2d');
@@ -43,6 +44,7 @@ let freezBall = true;
 
 let p1Score = 0;
 let p2Score = 0;
+let winningScore = 5;
 
 let p1UpPressed = false;
 let p1DownPressed = false;
@@ -52,7 +54,7 @@ let p2DownPressed = false;
 let maxDown = canvasEl.height - p1Paddle.height;
 
 // draw functions ----------------------------------------------------
-function createStartScreen () {
+function createStartScreen() {
   
     clearCanvas();
     ctx.fillStyle = "black";
@@ -180,11 +182,11 @@ function ballSpeed () {
   }
 };
 
-function hitAngle (paddle) {
-  const paddleCenter = (paddle.positionY + paddle.height) / 2;
-  const ballCenter = ball.positionY;
-  ball.positionY = (ballCenter - paddleCenter) * 0.05;
-};
+// function hitAngle (paddle) {
+//   const paddleCenter = (paddle.positionY + paddle.height) / 2;
+//   const ballCenter = ball.positionY;
+//   ball.positionY = (ballCenter - paddleCenter) * 0.05;
+// };
 
 function ballPaddleCollision () {
   const leftHorizontal = ball.positionX - ball.size  <= p1Paddle.positionX + p1Paddle.width && ball.positionX + ball.size >= p1Paddle.positionX;
@@ -215,19 +217,105 @@ function ballPaddleCollision () {
 function resetBall () {
   ball.positionX =canvasEl.width / 2;
   ball.positionY =canvasEl.height / 2;
+  ball.speedX = 4;
 };
 
-function playerScore () {
+function playerScore (event) {
   if (ball.positionX + ball.size < 0) {
-    p2Score += 1;
-    resetBall();
-    ball.speedX = 1;
+    console.log(p2Score)
+    if(p2Score == 5){
+      ball.positionX= canvasEl.width / 2, 
+      ball.positionY= canvasEl.height / 2,
+        ball.directionX= -1,
+  ball.directionY= 1,
+  ball.speedX= 4,   
+  ball.speedY= 4,
+  ball.size= 8,
+      freezBall =true
+      gameStarted = false;
+      p2Score = 0
+
+
+      // console.log('salman')
+      // createStartScreen()
+    }
+    else if(p2Score < 5){
+      p2Score += 1;
+      resetBall();
+    }
+
+        document.addEventListener('keydown', (event) => {
+  if (event.key === "Enter") {
+    gameStarted = true;
+    cancelAnimationFrame(animationFrameId);
+    render();
+
+    countdownIntervalId = setInterval(() => {
+      countdownValue -= 1;
+
+      if (countdownValue < 1) {
+        clearInterval(countdownIntervalId);
+        countdownActive = false;
+        freezBall = false;
+    }
+    }, 1000);
+  }
+});
+    
   }
   else if (ball.positionX - ball.size > canvasEl.width) {
-    p1Score += 1;
-    resetBall();
-    ball.speedX = 1;
+    if(p1Score == 5){
+      ball.positionX= canvasEl.width / 2, 
+      ball.positionY= canvasEl.height / 2,
+        ball.directionX= -1,
+  ball.directionY= 1,
+  ball.speedX= 4,   
+  ball.speedY= 4,
+  ball.size= 8,
+      freezBall =true
+      gameStarted = false;
+      p1Score = 0
+      console.log('salman')
+      // createStartScreen()
+      
+    }
+    else if(p1Score < 5){
+      p1Score += 1;
+      resetBall();
+    }
+    document.addEventListener('keydown', (event) => {
+  if (event.key === "Enter") {
+    gameStarted = true;
+    cancelAnimationFrame(animationFrameId);
+    render();
+
+    countdownIntervalId = setInterval(() => {
+      countdownValue -= 1;
+
+      if (countdownValue < 1) {
+        clearInterval(countdownIntervalId);
+        countdownActive = false;
+        freezBall = false;
+    }
+    }, 1000);
   }
+});
+  }
+
+  if (p1Score === winningScore) {
+    
+  }
+  else if (p2Score === winningScore) {
+
+  }
+};
+
+function gameOver (player) {
+  gameStarted = false;
+  countdownActive = true;
+  freezBall = true;
+  createStartScreen();
+
 };
 
 function render () {
@@ -250,7 +338,6 @@ function render () {
 createStartScreen();
 
 // Events ---------------------------------------------------------
-
 
 document.addEventListener('keydown', (event) => {
   if (!gameStarted && event.key === "Enter") {
