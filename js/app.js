@@ -1,6 +1,7 @@
 // Constants ---------------------------------------------------------
 const resultEl = document.querySelector('#result');
 const pauseEl = document.querySelector('.pause-btn');
+const resetEl = document.querySelector('.reset-btn');
 const canvasEl = document.querySelector('#canvas');
 
 const ctx = canvasEl.getContext('2d');
@@ -35,6 +36,7 @@ const p2Paddle = {
 };
 
 let isPaused = false;
+let gameOver = false;
 
 let gameStarted = false;
 let opacity = 1;
@@ -233,32 +235,62 @@ function playerScore () {
   if (ball.positionX + ball.size < 0) {
     p2Score += 1;
     resetBall();
-    if (p2Score === winningScore) {
-      gameReset('Player 2');
-    }
+    // if (p2Score === winningScore) {
+    //   gameReset('Player 2');
+    // }
   }
   else if (ball.positionX - ball.size > canvasEl.width) {
     p1Score += 1;
     resetBall();
-    if (p1Score === winningScore) {
-      gameReset('Player 1');
+    // if (p1Score === winningScore) {
+    //   gameReset('Player 1');
+    // }
+  }
+  if (p1Score >= winningScore || p2Score >= winningScore) {
+    gameOver = true;
+    freezBall = true;
+    countdownActive = false;
+
+    document.querySelector('.reset-btn').style.display = 'inline-block';
+    
+    if (p1Score >= winningScore) {
+      resultEl.textContent = `Player 1 wins please press reset to restart`;
+    }
+    else if (p2Score >= winningScore) {
+      resultEl.textContent = `Player 2 wins please press reset to restart`;
     }
   }
 };
 
-function gameReset (player) {
-  isPaused = true;
+function gameReset () {
   p1Score = 0;
   p2Score = 0;
+
+  ball.positionX = canvasEl.width / 2;
+  ball.positionY = canvasEl.height / 2;
+  ball.speedX = 4;
+  ball.speedY = 4;
+
   p1Paddle.positionY = 150;
-  p1Paddle.positionX = 20;
   p2Paddle.positionY = 150;
-  p2Paddle.positionX = 565;
-  resultEl.textContent = `${player} wins please press reset to restart`;
+
+  gameOver = false;
+  gameStarted = false;
+  freezBall = true;
+  countdownActive = true;
+  countdownValue = 3;
+
+  document.querySelector('.reset-btn').style.display = 'none';
+
+  resultEl.textContent = '';
+
+  cancelAnimationFrame(animationFrameId);
+  createStartScreen();
+  
 };
 
 function render () {
-  if (isPaused === true) {
+  if (isPaused === true || gameOver === true) {
     return;
   }
   ctx.fillStyle = 'white';
@@ -344,4 +376,8 @@ document.addEventListener('keyup', (event) => {
     resultEl.textContent = "";
     render();
   }
+});
+
+resetEl.addEventListener('click', () => {
+  gameReset();
 });

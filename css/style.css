@@ -29,7 +29,8 @@ body {
   background-color: #16476A;
 }
 
-.pause-btn {
+.pause-btn,
+.reset-btn {
   margin-top: 10px;
   padding: 6px 12px 6px 12px;
   border: solid 5px;
@@ -39,7 +40,12 @@ body {
   border-color: #3B9797;
 }
 
-.pause-btn:hover {
+.pause-btn:hover, 
+.reset-btn:hover {
   background-color: #3B9797;
   cursor: pointer;
 }
+
+.reset-btn {
+  display: none;
+} 
