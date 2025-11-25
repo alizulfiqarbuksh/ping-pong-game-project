@@ -250,7 +250,11 @@ function gameReset (player) {
   isPaused = true;
   p1Score = 0;
   p2Score = 0;
-  resultEl.textContent = `${player} wins please press pause to start`;
+  p1Paddle.positionY = 150;
+  p1Paddle.positionX = 20;
+  p2Paddle.positionY = 150;
+  p2Paddle.positionX = 565;
+  resultEl.textContent = `${player} wins please press reset to restart`;
 };
 
 function render () {
@@ -337,6 +341,7 @@ document.addEventListener('keyup', (event) => {
   }
   else {
     isPaused = false
+    resultEl.textContent = "";
     render();
   }
 });
