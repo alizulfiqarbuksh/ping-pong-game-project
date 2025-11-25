@@ -5,6 +5,8 @@ const canvasEl = document.querySelector('#canvas');
 
 const ctx = canvasEl.getContext('2d');
 
+const paddleHitSound = new Audio('../sounds/Tennis-ball-hit.mp3');
+
 // variables ---------------------------------------------------------
 const ball = {
   positionX: canvasEl.width / 2, 
@@ -202,6 +204,8 @@ function ballPaddleCollision () {
 
   if (leftHorizontal && leftVertical) 
   {
+    paddleHitSound.currentTime = 0;
+    paddleHitSound.play();
     ball.positionX = p1Paddle.positionX + p1Paddle.width + ball.size;
     ball.directionX *= -1;
     // hitAngle(p1Paddle);
@@ -210,6 +214,8 @@ function ballPaddleCollision () {
 
   if (rightHorizontal && rightVertical) 
   {
+    paddleHitSound.currentTime = 0;
+    paddleHitSound.play();
     ball.positionX = p2Paddle.positionX - ball.size;
     ball.directionX *= -1;
     // hitAngle(p2Paddle);
