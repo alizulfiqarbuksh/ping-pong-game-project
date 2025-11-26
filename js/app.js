@@ -254,10 +254,10 @@ function playerScore () {
     document.querySelector('.reset-btn').style.display = 'inline-block';
     
     if (p1Score >= winningScore) {
-      resultEl.textContent = `Player 1 wins please press reset to restart`;
+      resultEl.textContent = `Player 1 wins please press reset to play again`;
     }
     else if (p2Score >= winningScore) {
-      resultEl.textContent = `Player 2 wins please press reset to restart`;
+      resultEl.textContent = `Player 2 wins please press reset to play again`;
     }
   }
 };
